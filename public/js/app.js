@@ -6,6 +6,8 @@ socket.on('connect', function() {
 
 socket.on('message', function(message) {
   console.log('message', message.text);
+
+  jQuery('.messages').append('<p class="green">' + message.text + '</p>');
 });
 
 // Handles submitting of new message
@@ -18,6 +20,7 @@ $form.on('submit', function(event) {
   socket.emit('message', {
     text: $message.val()
   });
+  // jQuery('.messages').append('<p class="red">' + $message.val() + '</p>');
   $message.val('');
   $message.focus();
 });
