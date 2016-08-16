@@ -7,7 +7,7 @@ var io = require('socket.io')(http);
 app.use(express.static(__dirname + '/public'));
 
 io.on('connection', function(socket){
-  console.log('user connect via socket');
+  console.log('User connect via socket');
 
   socket.on('message', function(message) {
     console.log('Received message', message.text);
