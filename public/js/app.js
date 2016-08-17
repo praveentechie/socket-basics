@@ -6,8 +6,11 @@ socket.on('connect', function() {
 
 socket.on('message', function(message) {
   console.log('message', message.text);
-
-  jQuery('.messages').append('<p class="green">' + message.text + '</p>');
+  var timestampMoment = moment.utc(message.timestamp);
+  jQuery('.messages').append();
+  jQuery('.messages').append(
+    '<p class="green"><span>' + timestampMoment.local().format('h:mm a') + ': </span>' + message.text + '</p>'
+  );
 });
 
 // Handles submitting of new message
