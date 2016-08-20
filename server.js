@@ -11,6 +11,19 @@ var clientInfo = {};
 
 io.on('connection', function(socket){
   console.log('User connect via socket');
+
+  socket.on('disconnect', function(req) {
+    if (clientInfo[socket.id]) {
+      socket.leave(clientInfo[socket.id].room);
+      io.to(clientInfo[socket.id].room).emit('message', {
+        name: 'System',
+        text: clientInfo[socket.id].name + ' left the chat',
+        timestamp: moment().valueOf()
+      });
+      delete clientInfo[socket.id];
+    }
+  });
+
   socket.on('joinRoom', function(req) {
     // socket.id - unique id for room
     clientInfo[socket.id] = req;
@@ -19,7 +32,7 @@ io.on('connection', function(socket){
     // inform joined to all expect one joined
     socket.broadcast.to(req.room).emit('message', {
       name: 'System',
-      text: req.name + 'has joined',
+      text: req.name + ' has joined',
       timestamp: moment().valueOf()
     });
   });
